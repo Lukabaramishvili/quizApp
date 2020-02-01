@@ -1,12 +1,9 @@
 import React, { Component } from 'react';
 import ChoiceComponent from './ChoiceComponent';
-import Summary from './Summary';
-import { withRouter, Route } from 'react-router-dom'
+import { withRouter } from 'react-router-dom'
 
 
-// const quizQuestions = quizzes[0].questions
-
-class MultipleChoiceQuiz extends Component {
+class RedoQuestions extends Component {
   // quizQuestions: quizQuestions,
   state = {
     currentQuestionIndex: 0,
@@ -17,6 +14,7 @@ class MultipleChoiceQuiz extends Component {
   }
 
   componentDidMount () {
+    console.log(this.props.redo);
     this.generateChoices();
   }
 
@@ -46,7 +44,8 @@ class MultipleChoiceQuiz extends Component {
         currentQuestionIndex: prevState.currentQuestionIndex + 1
       }), this.generateChoices)
     } else {
-      // this.props.history.push('/quiz/summary')
+      this.props.handleCheckForSummary()
+      this.props.history.push('/quiz/summary')
       this.setState(prevState => ({
         currentQuestionIndex: prevState.currentQuestionIndex + 1
       }))
@@ -94,7 +93,7 @@ class MultipleChoiceQuiz extends Component {
   nextQuiz = () => {
     this.setState ({
       score: 0,
-      // currentQuestionIndex: 0,
+      currentQuestionIndex: 0,
       loading: true,
       chosen: null
     }, this.generateChoices)
@@ -129,6 +128,11 @@ class MultipleChoiceQuiz extends Component {
     if (loading){
       return <div>Loading...</div>
     }
+    // if (incorrect.length !== 0 && currentQuestionIndex === quizQuestions.length ) {
+    //   this.setState({
+    //
+    //   })
+    // }
 
     if (currentQuestionIndex < quizQuestions.length) {
     return (
@@ -152,14 +156,8 @@ class MultipleChoiceQuiz extends Component {
           </div>
       </div>
     )
-  } else if (this.props.incorrect.length !== 0 && this.props.redo == false) {
-    this.props.handleCheckForSummary()
-    return null
   }
-  else {
-      return <Route path="/quiz/summary" render={(renderProps) => <Summary renderProps={renderProps} score={score} moveToNextQuiz={this.props.moveToNextQuiz} nextQuiz={this.nextQuiz} quizQuestions={quizQuestions}/>} />
-    }
   }
 }
 
-export default withRouter(MultipleChoiceQuiz);
+export default withRouter(RedoQuestions);
