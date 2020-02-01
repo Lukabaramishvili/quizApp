@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
+import {getMessage} from './messages'
 
-const Summary = ({score, moveToNextQuiz, nextQuiz, quizQuestions}) => {
-  console.log(score);
-  const handleClick = (event) => {
+const Summary = ({score, moveToNextQuiz, beginNextQuiz, quizQuestions}) => {
+  const handleClick = event => {
     moveToNextQuiz()
-    nextQuiz()
+    beginNextQuiz()
   }
 
   return(<div className="app">
@@ -12,6 +12,7 @@ const Summary = ({score, moveToNextQuiz, nextQuiz, quizQuestions}) => {
     <div className="summary-container">
       You Scored {score} / {quizQuestions.length} correct answers!
     </div>
+    <p>{getMessage()}</p>
     <div>
       <button className="next-button" onClick={handleClick}>
         Next Quiz

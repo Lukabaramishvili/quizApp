@@ -3,11 +3,7 @@ import ChoiceComponent from './ChoiceComponent';
 import Summary from './Summary';
 import { withRouter, Route } from 'react-router-dom'
 
-
-// const quizQuestions = quizzes[0].questions
-
 class MultipleChoiceQuiz extends Component {
-  // quizQuestions: quizQuestions,
   state = {
     currentQuestionIndex: 0,
     score: 0,
@@ -64,7 +60,6 @@ class MultipleChoiceQuiz extends Component {
     })
 
     if (choice.toLowerCase() === quizQuestions[currentQuestionIndex].correctAnswer.toLowerCase()) {
-      // right: increase the
       this.increaseScore();
     }
   }
@@ -72,7 +67,6 @@ class MultipleChoiceQuiz extends Component {
   determineColor = (choice) => {
     let { currentQuestionIndex } = this.state;
     let { quizQuestions } = this.props;
-    // let style = {textDecoration: 'none'};
     let correctAnswer = quizQuestions[currentQuestionIndex].correctAnswer
 
     if (this.state.chosen) {
@@ -86,7 +80,7 @@ class MultipleChoiceQuiz extends Component {
     return "white"
   }
 
-  nextQuiz = () => {
+  beginNextQuiz = () => {
     this.setState ({
       score: 0,
       currentQuestionIndex: 0,
@@ -119,7 +113,7 @@ class MultipleChoiceQuiz extends Component {
   render() {
     const { currentQuestionIndex, choices, loading, score } = this.state
     let { quizQuestions, quizTitle } = this.props;
-    if (loading){
+    if (loading) {
       return <div>Loading...</div>
     }
     if (currentQuestionIndex < quizQuestions.length) {
@@ -135,7 +129,7 @@ class MultipleChoiceQuiz extends Component {
           </ol>
         </div>
         {
-          this.state.chosen === null ? <p></p> : this.state.chosen === quizQuestions[currentQuestionIndex].correctAnswer ? <p>correct</p> : <p>incorrect</p>
+          this.state.chosen === null ? <p></p> : this.state.chosen === quizQuestions[currentQuestionIndex].correctAnswer ? <p>Correct</p> : <p>Incorrect</p>
         }
           <div>
             {
@@ -144,7 +138,7 @@ class MultipleChoiceQuiz extends Component {
           </div>
       </div>
     )} else {
-      return <Route path="/quiz/summary" render={(renderProps) => <Summary renderProps={renderProps} score={score} moveToNextQuiz={this.props.moveToNextQuiz} nextQuiz={this.nextQuiz} quizQuestions={quizQuestions}/>} />
+      return <Route path="/quiz/summary" render={(renderProps) => <Summary renderProps={renderProps} score={score} moveToNextQuiz={this.props.moveToNextQuiz} beginNextQuiz={this.beginNextQuiz} quizQuestions={quizQuestions}/>} />
     }
   }
 }
