@@ -9,11 +9,17 @@ class MultipleChoiceQuiz extends Component {
     score: 0,
     choices: [],
     loading: true,
+    animationFade: '',
     chosen: null
   }
 
   componentDidMount () {
     this.generateChoices();
+    setTimeout(() => {
+      this.setState({
+        animationFade: 'fadeIn'
+      })
+    }, 2000)
   }
 
   generateChoices = () => {
@@ -38,9 +44,15 @@ class MultipleChoiceQuiz extends Component {
     let { quizQuestions } = this.props;
 
     if (quizQuestions[currentQuestionIndex + 1]) {
-      this.setState(prevState => ({
-        currentQuestionIndex: prevState.currentQuestionIndex + 1
-      }), this.generateChoices)
+      this.setState({
+        animationFade: 'fadeOut'
+      })
+      setTimeout(() => {
+        this.setState(prevState => ({
+          currentQuestionIndex: prevState.currentQuestionIndex + 1,
+          animationFade: 'fadeIn'
+        }), this.generateChoices)
+      }, 2000)
     } else {
       this.props.history.push('/quiz/summary')
       this.setState(prevState => ({
@@ -88,7 +100,7 @@ class MultipleChoiceQuiz extends Component {
       chosen: null
     }, this.generateChoices)
   }
-
+  
   shuffle = (array) => {
 
   	let currentIndex = array.length;
@@ -116,29 +128,38 @@ class MultipleChoiceQuiz extends Component {
     if (loading) {
       return <div>Loading...</div>
     }
+
     if (currentQuestionIndex < quizQuestions.length) {
     return (
       <div className="app">
         <h1>{quizTitle}</h1>
-        <div className="options-container">
+        <div className={`options-container ${this.state.animationFade}`} >
           <h5>{quizQuestions[currentQuestionIndex].text}</h5>
           <ol type="A">
             {
-              choices.map((choice, i) => <ChoiceComponent key={i} color={this.determineColor(choice)} choose={this.handleOptionClick} quizQuestions={quizQuestions} choice={choice} />)
+              choices.map((choice, i) => <ChoiceComponent key={i} color={this.determineColor(choice)} choose={this.handleOptionClick} choice={choice} />)
             }
           </ol>
         </div>
-        {
-          this.state.chosen === null ? <p></p> : this.state.chosen === quizQuestions[currentQuestionIndex].correctAnswer ? <p>Correct</p> : <p>Incorrect</p>
-        }
-          <div>
-            {
-              this.state.chosen ? <button className="next-button" onClick={this.handleNextButtonClick}>Next</button> : null
-            }
-          </div>
+          {this.state.chosen && (
+           <>
+             <p>
+               {this.state.chosen ===
+               quizQuestions[currentQuestionIndex].correctAnswer
+                 ? 'Correct'
+                 : 'Incorrect'}
+             </p>
+             <button
+               className="next-button"
+               onClick={this.handleNextButtonClick}
+             >
+               Next
+             </button>
+           </>
+         )}
       </div>
     )} else {
-      return <Route path="/quiz/summary" render={(renderProps) => <Summary renderProps={renderProps} score={score} moveToNextQuiz={this.props.moveToNextQuiz} beginNextQuiz={this.beginNextQuiz} quizQuestions={quizQuestions}/>} />
+      return <Route path="/quiz/summary" exact render={(renderProps) => <Summary renderProps={renderProps} score={score} moveToNextQuiz={this.props.moveToNextQuiz} beginNextQuiz={this.beginNextQuiz} quizQuestions={quizQuestions}/>} />
     }
   }
 }

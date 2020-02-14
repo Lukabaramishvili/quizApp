@@ -10,7 +10,7 @@ const Summary = ({score, moveToNextQuiz, beginNextQuiz, quizQuestions}) => {
   return(<div className="app">
     <h1>Summary Page</h1>
     <div className="summary-container">
-      You Scored {score} / {quizQuestions.length} correct answers!
+      You got {score} of {quizQuestions.length} questions right.
     </div>
     <p>{getMessage()}</p>
     <div>

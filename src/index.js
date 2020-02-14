@@ -4,11 +4,11 @@ import { BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import Home from './Home';
 import QuizComponent from './QuizComponent';
 import Summary from './Summary';
-
-import { quizzes } from './quizzes';
 import './styles.css';
 
-console.log('Here are the quizzes:', quizzes);
+// import { quizzes } from './quizzes';
+
+// console.log('Here are the quizzes:', quizzes);
 
 const App = () => {
   return (
